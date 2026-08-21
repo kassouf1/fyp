@@ -1,0 +1,29 @@
+{
+  "ConnectionStrings": {
+    "Default": "Data Source=smartfashion.db"
+  },
+  "Jwt": {
+    "Key": "REPLACE_WITH_A_LONG_RANDOM_SECRET_KEY",
+    "Issuer": "SmartFashion",
+    "Audience": "SmartFashionMobile"
+  },
+  "AllowedHosts": "*",
+  "Email": {
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "Username": "REPLACE_WITH_EMAIL",
+    "Password": "REPLACE_WITH_APP_PASSWORD",
+    "FromAddress": "REPLACE_WITH_EMAIL",
+    "FromName": "SmartFashion"
+  },
+  "AiBackend": {
+    "BaseUrl": "http://localhost:8001"
+  },
+  "Pexels": {
+    "Key": "REPLACE_WITH_PEXELS_KEY"
+  },
+  "RapidApi": {
+    "Key": "REPLACE_WITH_RAPIDAPI_KEY",
+    "ZalandoHost": "zalando-api2.p.rapidapi.com"
+  }
+}

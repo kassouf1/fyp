@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm \"/c/Users/User/Desktop/FYP 4/FYP/CatVTON/_test_imports.py\")",
+      "Bash(curl -v -m 10 https://cdn-lfs.huggingface.co)",
+      "Bash(rm \"/c/Users/User/Desktop/FYP 4/FYP/CatVTON/_download_model.py\")",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl -s http://localhost:8001/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5010/swagger/index.html)",
+      "Bash(rm -f \"/c/Users/User/Desktop/FYP 4/FYP/CatVTON/_download_all_models.py\")",
+      "Read(//c/Users/User/Desktop/FYP 4/FYP/CatVTON/**)",
+      "Bash(curl -s -m 10 http://localhost:8000/health)",
+      "Bash(curl -s -m 10 http://localhost:8001/)",
+      "Bash(curl -s -o /dev/null -m 10 -w \"HTTP %{http_code}\\\\n\" http://localhost:5010/swagger/index.html)",
+      "Bash(curl -s -H \"Accept: text/html,application/xhtml+xml\" http://localhost:8082/)",
+      "Bash(curl -s http://localhost:8082/)"
+    ]
+  }
+}

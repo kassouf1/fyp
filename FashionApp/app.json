@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "SmartFashion",
+    "slug": "smart-fashion",
+    "version": "1.0.0",
+    "scheme": "smart-fashion",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0D14"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.smartfashion.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0B0D14"
+      },
+      "package": "com.smartfashion.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#5B6EF5",
+          "sounds": []
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow SmartFashion to access your photos for virtual try-on.",
+          "cameraPermission": "Allow SmartFashion to use your camera for virtual try-on."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "savePhotosPermission": "Allow SmartFashion to save your try-on results to your photos."
+        }
+      ],
+      "expo-font"
+    ]
+  }
+}

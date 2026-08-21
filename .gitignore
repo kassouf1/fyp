@@ -1,0 +1,34 @@
+# CatVTON is its own fork/repo, excluded from this monorepo
+CatVTON/
+
+# Dependencies
+**/node_modules/
+**/venv/
+**/.venv/
+
+# .NET build output
+**/bin/
+**/obj/
+**/.vs/
+
+# Expo
+**/.expo/
+
+# Python
+**/__pycache__/
+*.pyc
+
+# Secrets - never commit
+.env
+**/.env
+FYP/appsettings.json
+
+# Runtime data / generated content
+*.db
+**/output/
+**/outputs/
+**/uploads/
+
+# OS
+.DS_Store
+Thumbs.db

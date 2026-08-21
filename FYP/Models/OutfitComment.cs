@@ -1,0 +1,13 @@
+namespace SmartFashion.Api.Models;
+
+public class OutfitComment
+{
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public int TryOnHistoryId { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public User? User { get; set; }
+    public TryOnHistory? TryOnHistory { get; set; }
+}
