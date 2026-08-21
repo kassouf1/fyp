@@ -32,3 +32,6 @@ FYP/appsettings.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Redundant zip backups
+*.zip
