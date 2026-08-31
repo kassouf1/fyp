@@ -26,6 +26,8 @@ class Preferences(BaseModel):
     styles: List[str]
     colors: List[str]
     season: str
+    gender: Optional[str] = None
+    occasion: Optional[str] = None
 
 
 class OutfitResponse(BaseModel):

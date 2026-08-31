@@ -43,6 +43,43 @@ OCCASION_SEASON_HINTS = {
     "winter": ["snow", "ski", "cold", "chilly"],
 }
 
+# Style/season/color scoring alone isn't enough to keep a beach outfit out of
+# track pants or put a wedding outfit in actual trousers — the catalog's own
+# style/season tags are too noisy for that (e.g. every women's shoe in the
+# catalog is tagged "casual", including heels). These are hard include/
+# exclude filters on the garment title, applied per category, on top of the
+# existing scoring — not just another scored signal — so a beach request
+# literally cannot surface trousers, and a wedding request cannot surface a
+# t-shirt or trainers.
+BEACH_WORDS = ["beach", "pool"]
+
+OCCASION_ITEM_RULES = {
+    "beach": {
+        "top": {
+            "exclude": ["jacket", "sweater", "sweatshirt", "waistcoat", "windcheater", "wind cheater", "kurta", "kurti"],
+            "include": ["shirt", "tshirt", "t-shirt", "tee", "polo"],
+        },
+        "bottom": {"include": ["short"]},
+        "shoes": {"exclude": ["formal", "heel", "wedge"]},
+    },
+    # Covers every OCCASION_STYLE_HINTS["elegant"] entry (wedding, gala,
+    # dinner, cocktail, formal, interview, office, business, meeting) —
+    # dress shirt/kurta + real trousers + formal shoes or heels, nothing
+    # athletic or beach-adjacent.
+    "formal": {
+        "top": {"exclude": ["tshirt", "t-shirt", "tee", "sweatshirt", "jacket", "windcheater", "wind cheater", "sweater"]},
+        "bottom": {"exclude": ["track pant", "tracksuit", "jean", "short", "cargo", "capri", "legging", "rain trousers"]},
+        "shoes": {"include": ["formal", "heel", "wedge", "sandal"]},
+    },
+    # Covers OCCASION_STYLE_HINTS["streetwear"] (gym, workout, sport, hike,
+    # street, skate, training).
+    "active": {
+        "top": {"include": ["tshirt", "t-shirt", "tee", "sweatshirt", "jacket", "polo"]},
+        "bottom": {"include": ["track", "short", "legging", "jogger", "capri", "tracksuit"]},
+        "shoes": {"exclude": ["formal", "heel", "wedge", "sandal"]},
+    },
+}
+
 
 def _contains_word(prompt: str, phrase: str) -> bool:
     # Plain substring checks would let "red" match inside "tired", "tan"
@@ -93,9 +130,25 @@ def extract_preferences(prompt: str) -> dict:
     if not season:
         season = "all"
 
+    # Independent of which style word ended up chosen above — "beach"/"pool"
+    # always means shorts-and-a-shirt regardless of season phrasing, while
+    # an "elegant" or "streetwear" style (whether typed directly or inferred
+    # from an occasion word like "wedding" or "gym") always means real
+    # trousers+formal shoes or joggers+trainers respectively. See
+    # OCCASION_ITEM_RULES for what each profile actually restricts.
+    if any(_contains_word(prompt, w) for w in BEACH_WORDS):
+        occasion = "beach"
+    elif "elegant" in styles:
+        occasion = "formal"
+    elif "streetwear" in styles:
+        occasion = "active"
+    else:
+        occasion = None
+
     return {
         "styles": styles,
         "colors": colors,
         "season": season,
         "gender": gender,
+        "occasion": occasion,
     }

@@ -1,4 +1,22 @@
 from app.adapters.mock_adapter import get_products
+from app.services.recommender import OCCASION_ITEM_RULES
+
+
+def _passes_occasion_rules(title_lower, category, occasion):
+    rules = OCCASION_ITEM_RULES.get(occasion, {}).get(category)
+    if not rules:
+        return True
+
+    if any(keyword in title_lower for keyword in rules.get("exclude", [])):
+        return False
+
+    include = rules.get("include", [])
+    if include and not any(keyword in title_lower for keyword in include):
+        return False
+
+    return True
+
+
 def score_product(product, preferences, target_category):
     score = 0
 
@@ -33,9 +51,12 @@ def score_product(product, preferences, target_category):
 
 def find_top_products(products, preferences, target_category, limit=4):
     gender = preferences.get("gender")
+    occasion = preferences.get("occasion")
     candidates = [
         p for p in products
-        if p["category"] == target_category and (not gender or p["gender"] == gender)
+        if p["category"] == target_category
+        and (not gender or p["gender"] == gender)
+        and _passes_occasion_rules(p["title"].lower(), target_category, occasion)
     ]
 
     scored = []
