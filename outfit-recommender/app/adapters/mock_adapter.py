@@ -52,4 +52,7 @@ def get_products():
 
     normalized_products = [normalize_product(product) for product in raw_products]
 
-    return normalized_products
+    # Shoes aren't try-on-able (CatVTON only masks upper/lower body regions),
+    # so they're filtered out at the source here rather than in every
+    # consumer (Brand Shop's /catalog, the recommender, similarity search).
+    return [p for p in normalized_products if p["category"] != "shoes"]

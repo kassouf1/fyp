@@ -21,7 +21,6 @@ const BRAND_CHIPS = [
   { label: 'All',          query: ''            },
   { label: '👕 Tops',       query: 'top'         },
   { label: '👖 Bottoms',    query: 'bottom'      },
-  { label: '👟 Shoes',      query: 'shoes'       },
   { label: '🧑 Men',        query: 'men'         },
   { label: '👩 Women',      query: 'women'       },
   { label: 'Casual',        query: 'casual'      },
@@ -177,7 +176,7 @@ export const BrandShopScreen: React.FC<Props> = ({ navigation }) => {
               value={searchText}
               onChangeText={t => { setSearchText(t); setActiveChip(''); applyFilter(t, categoryBase); }}
               onSubmitEditing={handleSearch}
-              placeholder={forSlot === 'top' ? 'Search tops…' : forSlot === 'bottom' ? 'Search bottoms…' : 'Search tops, bottoms, shoes…'}
+              placeholder={forSlot === 'top' ? 'Search tops…' : forSlot === 'bottom' ? 'Search bottoms…' : 'Search tops, bottoms…'}
               placeholderTextColor={c.textMuted}
               style={[styles.searchInput, { color: c.text }]}
               returnKeyType="search"

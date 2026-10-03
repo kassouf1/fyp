@@ -1,4 +1,4 @@
-import { OUTFIT_RECOMMENDER_BASE_URL } from '../api/client';
+import { OUTFIT_RECOMMENDER_BASE_URL, BASE_URL } from '../api/client';
 
 export interface BrandProduct {
   id: string;
@@ -28,12 +28,20 @@ interface CatalogProduct {
   image_path: string;
 }
 
+// Partner products (see BrandPartnersController.Products) already carry a
+// full external URL in image_path since the brand hosts its own images —
+// the internal catalog's image_path is server-relative and needs
+// OUTFIT_RECOMMENDER_BASE_URL prepended. Checking for "http" is how the two
+// are told apart.
+const resolveImageUrl = (path: string): string =>
+  path.startsWith('http') ? path : `${OUTFIT_RECOMMENDER_BASE_URL}${path}`;
+
 const toBrandProduct = (p: CatalogProduct): BrandProduct => ({
   id: p.id,
   name: p.title,
   brand: p.brand && p.brand !== 'Kaggle' ? p.brand : '',
   price: p.price > 0 ? `£${p.price.toFixed(2)}` : '',
-  imageUrl: `${OUTFIT_RECOMMENDER_BASE_URL}${p.image_path}`,
+  imageUrl: resolveImageUrl(p.image_path),
   tags: [p.category, p.color, p.season, ...p.style, ...p.title.toLowerCase().split(/\s+/)],
   topId: p.id,
 });
@@ -41,17 +49,19 @@ const toBrandProduct = (p: CatalogProduct): BrandProduct => ({
 let cache: BrandProduct[] | null = null;
 let inFlight: Promise<BrandProduct[]> | null = null;
 
-// Fetches Brand Shop's catalog from our own outfit-recommender dataset — the
-// same items used for AI recommendations — so every item shown is
-// guaranteed to work with virtual try-on, instead of pulling random items
-// from unrelated third-party image sources. Cached after the first call.
+// Fetches Brand Shop's catalog from our own outfit-recommender dataset —
+// the same items used for AI recommendations, so every item is guaranteed
+// to work with virtual try-on — plus every connected brand partner's live
+// catalog (see BrandPartnerScreen). Cached after the first call.
 export const fetchBrandProducts = async (): Promise<BrandProduct[]> => {
   if (cache) return cache;
   if (!inFlight) {
-    inFlight = fetch(`${OUTFIT_RECOMMENDER_BASE_URL}/catalog`)
-      .then(res => res.json())
-      .then((data: CatalogProduct[]) => {
-        cache = data.map(toBrandProduct);
+    inFlight = Promise.all([
+      fetch(`${OUTFIT_RECOMMENDER_BASE_URL}/catalog`).then(res => res.json()).catch(() => []),
+      fetch(`${BASE_URL}/api/brandpartners/products`).then(res => res.json()).catch(() => []),
+    ])
+      .then(([internal, partner]: [CatalogProduct[], CatalogProduct[]]) => {
+        cache = [...internal, ...partner].map(toBrandProduct);
         return cache;
       })
       .finally(() => { inFlight = null; });

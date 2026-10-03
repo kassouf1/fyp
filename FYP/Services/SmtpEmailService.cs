@@ -14,7 +14,23 @@ public class SmtpEmailService : IEmailService
         _logger = logger;
     }
 
-    public async Task SendVerificationCodeAsync(string toEmail, string fullName, string code)
+    public Task SendVerificationCodeAsync(string toEmail, string fullName, string code) =>
+        SendCodeEmailAsync(
+            toEmail, fullName, code,
+            subject: "Your SmartFashion Verification Code",
+            headline: "Verify your email address",
+            bodyText: "Use the code below to complete your SmartFashion registration.");
+
+    public Task SendPasswordResetCodeAsync(string toEmail, string fullName, string code) =>
+        SendCodeEmailAsync(
+            toEmail, fullName, code,
+            subject: "Your SmartFashion Password Reset Code",
+            headline: "Reset your password",
+            bodyText: "Use the code below to choose a new password for your SmartFashion account. " +
+                      "If you didn't request this, you can safely ignore this email — your password won't change.");
+
+    private async Task SendCodeEmailAsync(
+        string toEmail, string fullName, string code, string subject, string headline, string bodyText)
     {
         var host     = _config["Email:SmtpHost"]     ?? throw new InvalidOperationException("Email:SmtpHost not configured.");
         var port     = int.Parse(_config["Email:SmtpPort"] ?? "587");
@@ -32,8 +48,8 @@ public class SmtpEmailService : IEmailService
         var msg = new MailMessage
         {
             From       = new MailAddress(from, fromName),
-            Subject    = "Your SmartFashion Verification Code",
-            Body       = BuildHtml(fullName, code),
+            Subject    = subject,
+            Body       = BuildHtml(fullName, code, headline, bodyText),
             IsBodyHtml = true,
         };
         msg.To.Add(toEmail);
@@ -41,22 +57,22 @@ public class SmtpEmailService : IEmailService
         try
         {
             await smtp.SendMailAsync(msg);
-            _logger.LogInformation("Verification email sent to {Email}", toEmail);
+            _logger.LogInformation("Code email ({Subject}) sent to {Email}", subject, toEmail);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to send verification email to {Email}", toEmail);
+            _logger.LogError(ex, "Failed to send code email ({Subject}) to {Email}", subject, toEmail);
             throw;
         }
     }
 
-    private static string BuildHtml(string name, string code) => $"""
+    private static string BuildHtml(string name, string code, string headline, string bodyText) => $"""
         <!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8"/>
           <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-          <title>SmartFashion – Verify your email</title>
+          <title>SmartFashion</title>
         </head>
         <body style="margin:0;padding:0;background:#0A0A0F;font-family:Arial,Helvetica,sans-serif;">
           <table width="100%" cellpadding="0" cellspacing="0">
@@ -81,11 +97,11 @@ public class SmtpEmailService : IEmailService
                   <tr>
                     <td style="padding:40px;">
                       <h2 style="color:#FFFFFF;font-size:22px;font-weight:700;margin:0 0 12px;">
-                        Verify your email address
+                        {headline}
                       </h2>
                       <p style="color:#A0A0B8;font-size:15px;line-height:1.6;margin:0 0 28px;">
                         Hi <strong style="color:#FFFFFF;">{name}</strong>,<br/>
-                        Use the code below to complete your SmartFashion registration.
+                        {bodyText}
                         The code expires in <strong style="color:#C9A96E;">15 minutes</strong>.
                       </p>
 
@@ -94,17 +110,13 @@ public class SmtpEmailService : IEmailService
                                   padding:28px;text-align:center;margin-bottom:28px;">
                         <div style="font-size:10px;font-weight:700;color:#C9A96E;letter-spacing:2px;
                                     text-transform:uppercase;margin-bottom:16px;">
-                          Verification Code
+                          Your Code
                         </div>
                         <div style="font-size:44px;font-weight:800;color:#C9A96E;letter-spacing:16px;
                                     font-family:'Courier New',monospace;">
                           {code}
                         </div>
                       </div>
-
-                      <p style="color:#6A6A80;font-size:13px;line-height:1.6;margin:0;text-align:center;">
-                        If you did not create a SmartFashion account, you can safely ignore this email.
-                      </p>
                     </td>
                   </tr>
 

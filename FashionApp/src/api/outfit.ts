@@ -24,7 +24,6 @@ export interface OutfitItem {
   title: string;
   top: string;
   bottom: string;
-  shoes: string;
   color?: string;
   category?: string;
   // Catalog id of the recommended top, so try-on can use that exact garment
@@ -33,7 +32,6 @@ export interface OutfitItem {
   bottomId?: string;
   imageUrl?: string;
   bottomImageUrl?: string;
-  shoesImageUrl?: string;
 }
 
 export interface RecommendRequest {

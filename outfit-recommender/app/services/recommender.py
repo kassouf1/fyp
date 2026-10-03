@@ -24,6 +24,33 @@ COLOR_ALIASES = {
 POSSIBLE_STYLES = ["casual", "streetwear", "elegant"]
 POSSIBLE_SEASONS = ["winter", "summer", "spring", "autumn"]
 
+# Neutral/classic colors are safe to pair with literally anything (including
+# another neutral, or a single bold color as an accent). Everything else is
+# a "statement" color that clashes when paired with ANOTHER different bold
+# color — a green short next to an orange shirt is two statements fighting
+# each other, not an outfit. See matcher.score_all_combinations, which hard-
+# excludes bold-on-different-bold pairings rather than just scoring them
+# lower (a soft penalty can still lose a tie and let the clash through).
+NEUTRAL_COLORS = {
+    "black", "white", "off white", "grey", "charcoal", "grey melange", "silver",
+    "beige", "tan", "khaki", "brown", "coffee brown", "cream", "maroon",
+    "navy blue", "blue",
+}
+BOLD_COLORS = {
+    "red", "orange", "peach", "copper", "gold", "yellow", "mustard", "green",
+    "olive", "sea green", "teal", "turquoise blue", "purple", "lavender",
+    "mauve", "magenta", "pink", "rust",
+}
+
+# Pairings called out by name as reliably classy — scored as a bonus on top
+# of the neutral/bold hard rule above, not a replacement for it.
+CLASSY_COLOR_PAIRS = {
+    frozenset({"black", "white"}), frozenset({"black", "grey"}),
+    frozenset({"black", "brown"}), frozenset({"brown", "beige"}),
+    frozenset({"white", "blue"}), frozenset({"white", "brown"}),
+    frozenset({"beige", "navy blue"}),
+}
+
 MEN_WORDS = ["men", "man", "male", "guy", "boyfriend", "husband", "boy", "gentleman", "his"]
 WOMEN_WORDS = ["women", "woman", "female", "girl", "lady", "ladies", "wife", "girlfriend", "her"]
 
@@ -34,7 +61,7 @@ OCCASION_STYLE_HINTS = {
     # Bare "date" is deliberately excluded — "beach date" and "movie date"
     # are casual, so a standalone "date" isn't a reliable elegant signal on
     # its own; "dinner date"/"date night" are specific enough to keep.
-    "elegant": ["wedding", "dinner date", "date night", "party", "gala", "dinner", "cocktail", "formal", "interview", "office", "business", "meeting"],
+    "elegant": ["wedding", "dinner date", "date night", "romantic", "party", "gala", "dinner", "cocktail", "formal", "interview", "office", "business", "meeting"],
     "streetwear": ["gym", "workout", "sport", "hike", "hiking", "street", "skate", "training"],
     "casual": ["beach", "vacation", "weekend", "brunch", "hangout", "everyday", "travel", "chill", "relax"],
 }
@@ -53,30 +80,58 @@ OCCASION_SEASON_HINTS = {
 # t-shirt or trainers.
 BEACH_WORDS = ["beach", "pool"]
 
+# A dinner-type occasion is a stricter subset of "elegant" — it still wants
+# OCCASION_STYLE_HINTS["elegant"] to fire (so style scoring leans elegant),
+# but on top of the formal item rules it also locks the palette down to
+# classic colors (see ROMANTIC_COLORS + matcher.score_product), which plain
+# weddings/interviews/business meetings shouldn't be forced into.
+ROMANTIC_WORDS = ["romantic", "date night", "dinner date", "candlelight", "valentine", "anniversary", "dinner"]
+ROMANTIC_COLORS = {"black", "white", "off white", "grey", "charcoal", "maroon"}
+
 OCCASION_ITEM_RULES = {
     "beach": {
         "top": {
+            # Plain "shirt" used to be enough on its own, which let formal
+            # button-downs through. Beach now only wants the sporty/relaxed
+            # end of tops — t-shirts, polos, and linen/camp-collar shirts —
+            # so a buttoned dress shirt no longer qualifies just because the
+            # word "shirt" is somewhere in its title.
             "exclude": ["jacket", "sweater", "sweatshirt", "waistcoat", "windcheater", "wind cheater", "kurta", "kurti"],
-            "include": ["shirt", "tshirt", "t-shirt", "tee", "polo"],
+            "include": ["tshirt", "t-shirt", "tee", "polo", "linen", "camp collar"],
         },
         "bottom": {"include": ["short"]},
-        "shoes": {"exclude": ["formal", "heel", "wedge"]},
     },
     # Covers every OCCASION_STYLE_HINTS["elegant"] entry (wedding, gala,
     # dinner, cocktail, formal, interview, office, business, meeting) —
-    # dress shirt/kurta + real trousers + formal shoes or heels, nothing
-    # athletic or beach-adjacent.
+    # dress shirt/kurta + real trousers, nothing athletic or beach-adjacent.
     "formal": {
         "top": {"exclude": ["tshirt", "t-shirt", "tee", "sweatshirt", "jacket", "windcheater", "wind cheater", "sweater"]},
         "bottom": {"exclude": ["track pant", "tracksuit", "jean", "short", "cargo", "capri", "legging", "rain trousers"]},
-        "shoes": {"include": ["formal", "heel", "wedge", "sandal"]},
+    },
+    # Same garment-type rules as "formal" — a romantic dinner still means
+    # real trousers + a proper top — the extra classic-colors-only
+    # restriction is applied separately in matcher.score_product.
+    "romantic": {
+        "top": {"exclude": ["tshirt", "t-shirt", "tee", "sweatshirt", "jacket", "windcheater", "wind cheater", "sweater"]},
+        "bottom": {"exclude": ["track pant", "tracksuit", "jean", "short", "cargo", "capri", "legging", "rain trousers"]},
     },
     # Covers OCCASION_STYLE_HINTS["streetwear"] (gym, workout, sport, hike,
-    # street, skate, training).
+    # street, skate, training). Narrowed to just shorts/sweatpants + a
+    # t-shirt — jackets, sweatshirts and polos read as streetwear/athleisure
+    # rather than actual gym wear, and leggings/capris/tracksuits aren't the
+    # "shorts or sweatpants" the gym case specifically asks for.
     "active": {
-        "top": {"include": ["tshirt", "t-shirt", "tee", "sweatshirt", "jacket", "polo"]},
-        "bottom": {"include": ["track", "short", "legging", "jogger", "capri", "tracksuit"]},
-        "shoes": {"exclude": ["formal", "heel", "wedge", "sandal"]},
+        # "sweatshirt" literally contains the substring "tshirt" (swea-TSHIRT)
+        # so it would otherwise slip past the include check below — gym tops
+        # are only plain t-shirts, so exclude it (and jacket/sweater,
+        # streetwear/athleisure rather than actual gym wear) explicitly.
+        "top": {"exclude": ["sweatshirt", "sweater", "jacket"], "include": ["tshirt", "t-shirt", "tee"]},
+        # "track pant" (not bare "track") deliberately excludes "tracksuit"
+        # sets — a 2-piece tracksuit's bottom half isn't the plain
+        # shorts-or-sweatpants the gym case asks for. "swim" is excluded so
+        # beach swim trunks (also titled "...Shorts") don't double as gym
+        # wear.
+        "bottom": {"exclude": ["swim"], "include": ["short", "track pant", "jogger", "sweat pant"]},
     },
 }
 
@@ -138,6 +193,8 @@ def extract_preferences(prompt: str) -> dict:
     # OCCASION_ITEM_RULES for what each profile actually restricts.
     if any(_contains_word(prompt, w) for w in BEACH_WORDS):
         occasion = "beach"
+    elif any(_contains_word(prompt, w) for w in ROMANTIC_WORDS):
+        occasion = "romantic"
     elif "elegant" in styles:
         occasion = "formal"
     elif "streetwear" in styles:

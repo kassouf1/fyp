@@ -25,6 +25,8 @@ FYP/appsettings.json
 
 # Runtime data / generated content
 *.db
+*.db-shm
+*.db-wal
 **/output/
 **/outputs/
 **/uploads/

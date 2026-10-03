@@ -20,7 +20,6 @@ class Product(BaseModel):
 class OutfitCombination(BaseModel):
     top: Product
     bottom: Product
-    shoes: Product
 
 class Preferences(BaseModel):
     styles: List[str]
@@ -34,7 +33,6 @@ class OutfitResponse(BaseModel):
     preferences: Preferences
     top: List[Product]
     bottom: List[Product]
-    shoes: List[Product]
     combinations: List[OutfitCombination]
     
    

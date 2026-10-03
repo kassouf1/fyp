@@ -14,13 +14,16 @@ def run_catvton(person_image_path, cloth_image_path, cloth_type="upper"):
 
         data = {
             "cloth_type": cloth_type,
-            # CatVTON's own demo defaults to 20 steps (its slider goes up to
-            # 100) — more steps trades inference time for a more converged,
-            # realistic result. Paired with the 768x1024 generation
-            # resolution (see CatVTON/api/main.py), 40 gives a noticeably
-            # more detailed, professional-looking result than the earlier
-            # 20/30 while staying well inside the request timeouts.
-            "num_inference_steps": "40",
+            # CatVTON's own demo defaults to 20 steps. A previous attempt at
+            # 40 steps (to get a more converged/detailed result) assumed that
+            # was safe given the 768x1024 generation resolution (see
+            # CatVTON/api/main.py) — in practice, on an 8GB GPU already
+            # sitting near its VRAM ceiling at that resolution, 40 steps
+            # pushed real-world generation time past the client's request
+            # timeout. Back to CatVTON's documented default; the resolution
+            # bump (which is what actually fixed the blurry-result problem)
+            # is kept.
+            "num_inference_steps": "20",
             "guidance_scale": "2.5",
             "seed": "42",
         }

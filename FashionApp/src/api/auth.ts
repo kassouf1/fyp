@@ -50,6 +50,19 @@ export const resendCode = async (userId: number): Promise<void> => {
   await client.post('/auth/resend-code', { userId });
 };
 
+export const forgotPassword = async (email: string): Promise<void> => {
+  await client.post('/auth/forgot-password', { email });
+};
+
+export const resetPassword = async (
+  email: string,
+  code: string,
+  newPassword: string,
+): Promise<AuthResponse> => {
+  const res = await client.post<AuthResponse>('/auth/reset-password', { email, code, newPassword });
+  return res.data;
+};
+
 export const socialAuth = async (
   provider: string,
   email: string,

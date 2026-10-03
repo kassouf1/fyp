@@ -750,21 +750,6 @@
     "image_url": "assets/garments/men/bottoms/51334.jpg"
   },
   {
-    "id": "111",
-    "brand": "Kaggle",
-    "title": "ADIDAS Men's Shale Yellow Track Pant",
-    "gender": "men",
-    "category": "bottom",
-    "cloth_type": "lower",
-    "color": "yellow",
-    "season": "summer",
-    "style": [
-      "streetwear"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/men/bottoms/4832.jpg"
-  },
-  {
     "id": "112",
     "brand": "Kaggle",
     "title": "Nike Men Solid Olive Tracksuits",
@@ -1005,21 +990,6 @@
     "image_url": "assets/garments/men/tops/12462.jpg"
   },
   {
-    "id": "128",
-    "brand": "Kaggle",
-    "title": "Turtle Men Check Magenta Shirt",
-    "gender": "men",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "magenta",
-    "season": "summer",
-    "style": [
-      "elegant"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/men/tops/26389.jpg"
-  },
-  {
     "id": "129",
     "brand": "Kaggle",
     "title": "U.S. Polo Assn. Men Solid Off White Sweater",
@@ -1155,21 +1125,6 @@
     "image_url": "assets/garments/men/tops/11172.jpg"
   },
   {
-    "id": "138",
-    "brand": "Kaggle",
-    "title": "Myntra Men Turquoise Blue Striped Shirt",
-    "gender": "men",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "turquoise blue",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/men/tops/51409.jpg"
-  },
-  {
     "id": "139",
     "brand": "Kaggle",
     "title": "Fabindia Women Blue Harem Pants",
@@ -1183,21 +1138,6 @@
     ],
     "price": 0,
     "image_url": "assets/garments/women/bottoms/30921.jpg"
-  },
-  {
-    "id": "140",
-    "brand": "Kaggle",
-    "title": "ADIDAS Women Mauve Track Pant",
-    "gender": "women",
-    "category": "bottom",
-    "cloth_type": "lower",
-    "color": "mauve",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/bottoms/53751.jpg"
   },
   {
     "id": "141",
@@ -1350,21 +1290,6 @@
     "image_url": "assets/garments/women/bottoms/50019.jpg"
   },
   {
-    "id": "151",
-    "brand": "Kaggle",
-    "title": "Shree Women Mustard & Green Patiala",
-    "gender": "women",
-    "category": "bottom",
-    "cloth_type": "lower",
-    "color": "mustard",
-    "season": "autumn",
-    "style": [
-      "elegant"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/bottoms/47080.jpg"
-  },
-  {
     "id": "152",
     "brand": "Kaggle",
     "title": "Femella Women Cream Leggings",
@@ -1393,21 +1318,6 @@
     ],
     "price": 0,
     "image_url": "assets/garments/women/bottoms/25899.jpg"
-  },
-  {
-    "id": "154",
-    "brand": "Kaggle",
-    "title": "DUSG Women Uttarkashi Organic Endive Capri",
-    "gender": "women",
-    "category": "bottom",
-    "cloth_type": "lower",
-    "color": "yellow",
-    "season": "autumn",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/bottoms/2954.jpg"
   },
   {
     "id": "155",
@@ -1483,21 +1393,6 @@
     ],
     "price": 0,
     "image_url": "assets/garments/women/bottoms/10052.jpg"
-  },
-  {
-    "id": "160",
-    "brand": "Kaggle",
-    "title": "ONLY Women Orange Shorts",
-    "gender": "women",
-    "category": "bottom",
-    "cloth_type": "lower",
-    "color": "orange",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/bottoms/43656.jpg"
   },
   {
     "id": "161",
@@ -1635,36 +1530,6 @@
     "image_url": "assets/garments/women/tops/7019.jpg"
   },
   {
-    "id": "170",
-    "brand": "Kaggle",
-    "title": "ONLY Women Turquoise Chiffon Top",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "turquoise blue",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/32579.jpg"
-  },
-  {
-    "id": "171",
-    "brand": "Kaggle",
-    "title": "Flying Machine Women Solid Peach Sweaters",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "peach",
-    "season": "autumn",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/14091.jpg"
-  },
-  {
     "id": "172",
     "brand": "Kaggle",
     "title": "Folklore Women Green Kurta",
@@ -1755,36 +1620,6 @@
     "image_url": "assets/garments/women/tops/12112.jpg"
   },
   {
-    "id": "178",
-    "brand": "Kaggle",
-    "title": "Tokyo Talkies Women Yellow Printed Top",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "yellow",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/45962.jpg"
-  },
-  {
-    "id": "179",
-    "brand": "Kaggle",
-    "title": "Myntra Women Turquoise Blue Check Shirt",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "turquoise blue",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/51434.jpg"
-  },
-  {
     "id": "180",
     "brand": "Kaggle",
     "title": "ALayna Women Red Kurta",
@@ -1815,21 +1650,6 @@
     "image_url": "assets/garments/women/tops/24165.jpg"
   },
   {
-    "id": "182",
-    "brand": "Kaggle",
-    "title": "Femella Women Mustard Polo T-Shirt",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "mustard",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/52143.jpg"
-  },
-  {
     "id": "183",
     "brand": "Kaggle",
     "title": "BIBA OUTLET Women Printed Off White Kurti",
@@ -1843,21 +1663,6 @@
     ],
     "price": 0,
     "image_url": "assets/garments/women/tops/22774.jpg"
-  },
-  {
-    "id": "184",
-    "brand": "Kaggle",
-    "title": "Arrow Woman Lavender Shirt",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "lavender",
-    "season": "summer",
-    "style": [
-      "casual"
-    ],
-    "price": 0,
-    "image_url": "assets/garments/women/tops/26367.jpg"
   },
   {
     "id": "185",
@@ -1875,18 +1680,453 @@
     "image_url": "assets/garments/women/tops/28739.jpg"
   },
   {
-    "id": "186",
-    "brand": "Kaggle",
-    "title": "Latin Quarters Women Orange Top",
-    "gender": "women",
-    "category": "top",
-    "cloth_type": "upper",
-    "color": "orange",
+    "id": "1001",
+    "brand": "Beach Co.",
+    "title": "Beach Co. Men Blue & White Striped Swim Shorts",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "blue",
     "season": "summer",
     "style": [
       "casual"
     ],
     "price": 0,
-    "image_url": "assets/garments/women/tops/38866.jpg"
+    "image_url": "assets/garments/men/bottoms/1001.jpg"
+  },
+  {
+    "id": "1002",
+    "brand": "Urban Classics",
+    "title": "Urban Classics Men Teal & Navy Colorblock Swim Shorts",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "teal",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1002.jpg"
+  },
+  {
+    "id": "1004",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Rust Leaf Print Swim Shorts",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "rust",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1004.jpg"
+  },
+  {
+    "id": "1005",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Cream Crochet Camp Collar Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "cream",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1005.jpg"
+  },
+  {
+    "id": "1006",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Navy Gauze Camp Collar Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "navy blue",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1006.jpg"
+  },
+  {
+    "id": "1007",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Beige Striped Linen-Blend Camp Collar Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "beige",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1007.jpg"
+  },
+  {
+    "id": "1008",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Light Blue Textured Camp Collar Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "blue",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1008.jpg"
+  },
+  {
+    "id": "1009",
+    "brand": "Zara",
+    "title": "Zara Men Off White Ribbed Polo Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "off white",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1009.jpg"
+  },
+  {
+    "id": "1010",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Olive Ribbed Polo Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "olive",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1010.jpg"
+  },
+  {
+    "id": "1011",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Dark Green Ribbed Polo Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "green",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1011.jpg"
+  },
+  {
+    "id": "1012",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Brown Oversized Polo Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "brown",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/tops/1012.jpg"
+  },
+  {
+    "id": "1013",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Beige Pleated Wool Trousers",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "beige",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1013.jpg"
+  },
+  {
+    "id": "1014",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Black Straight Trousers",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "black",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1014.jpg"
+  },
+  {
+    "id": "1015",
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Grey Wide-Leg Trousers",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "grey",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1015.jpg"
+  },
+  {
+    "id": "1016",
+    "brand": "Abercrombie & Fitch",
+    "title": "Abercrombie & Fitch Men Dark Brown Pinstripe Suit Trousers",
+    "gender": "men",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "coffee brown",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/men/bottoms/1016.jpg"
+  },
+  {
+    "id": 1017,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Black Ribbed Knit Tee",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "black",
+    "season": "all",
+    "style": [
+      "casual"
+    ],
+    "price": 1499,
+    "image_url": "assets/garments/men/tops/1017.jpg"
+  },
+  {
+    "id": 1018,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Charcoal Ribbed Resort Polo",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "charcoal",
+    "season": "all",
+    "style": [
+      "casual"
+    ],
+    "price": 1599,
+    "image_url": "assets/garments/men/tops/1018.jpg"
+  },
+  {
+    "id": 1019,
+    "brand": "Delency",
+    "title": "Delency Men Navy Ribbed Polo Shirt",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "navy blue",
+    "season": "all",
+    "style": [
+      "casual"
+    ],
+    "price": 1399,
+    "image_url": "assets/garments/men/tops/1019.jpg"
+  },
+  {
+    "id": 1020,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Brown Ribbed Zip Polo",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "brown",
+    "season": "all",
+    "style": [
+      "casual"
+    ],
+    "price": 1549,
+    "image_url": "assets/garments/men/tops/1020.jpg"
+  },
+  {
+    "id": 1021,
+    "brand": "Days Gone By",
+    "title": "Days Gone By Men Brown Knit Button Polo Sweater",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "brown",
+    "season": "winter",
+    "style": [
+      "elegant"
+    ],
+    "price": 2499,
+    "image_url": "assets/garments/men/tops/1021.jpg"
+  },
+  {
+    "id": 1022,
+    "brand": "APT",
+    "title": "APT Men Brown Cable Knit Quarter-Zip Sweater",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "brown",
+    "season": "winter",
+    "style": [
+      "elegant"
+    ],
+    "price": 2699,
+    "image_url": "assets/garments/men/tops/1022.jpg"
+  },
+  {
+    "id": 1023,
+    "brand": "Nike",
+    "title": "Nike Men Black Pro Compression Tee",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "black",
+    "season": "all",
+    "style": [
+      "streetwear"
+    ],
+    "price": 1999,
+    "image_url": "assets/garments/men/tops/1023.jpg"
+  },
+  {
+    "id": 1024,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Men Black Quarter-Zip Thermal Running Top",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "black",
+    "season": "winter",
+    "style": [
+      "streetwear"
+    ],
+    "price": 2199,
+    "image_url": "assets/garments/men/tops/1024.jpg"
+  },
+  {
+    "id": 1025,
+    "brand": "Under Armour",
+    "title": "Under Armour Men White HeatGear Compression Tee",
+    "gender": "men",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "white",
+    "season": "all",
+    "style": [
+      "streetwear"
+    ],
+    "price": 2299,
+    "image_url": "assets/garments/men/tops/1025.jpg"
+  },
+  {
+    "id": 1026,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Women Off White Pleated Wide-Leg Trousers",
+    "gender": "women",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "off white",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 2199,
+    "image_url": "assets/garments/women/bottoms/1026.png"
+  },
+  {
+    "id": 1027,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Women Off White Flared Trousers",
+    "gender": "women",
+    "category": "bottom",
+    "cloth_type": "lower",
+    "color": "off white",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 2299,
+    "image_url": "assets/garments/women/bottoms/1027.png"
+  },
+  {
+    "id": 1028,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Women Burgundy Draped Top",
+    "gender": "women",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "maroon",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 1799,
+    "image_url": "assets/garments/women/tops/1028.jpg"
+  },
+  {
+    "id": 1029,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Women Burgundy Satin One-Shoulder Top",
+    "gender": "women",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "maroon",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 1899,
+    "image_url": "assets/garments/women/tops/1029.jpg"
+  },
+  {
+    "id": 1030,
+    "brand": "SmartFashion Select",
+    "title": "SmartFashion Select Women Black Draped Top",
+    "gender": "women",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "black",
+    "season": "all",
+    "style": [
+      "elegant"
+    ],
+    "price": 1799,
+    "image_url": "assets/garments/women/tops/1030.jpg"
+  },
+  {
+    "id": "182",
+    "brand": "Kaggle",
+    "title": "Femella Women Mustard Polo T-Shirt",
+    "gender": "women",
+    "category": "top",
+    "cloth_type": "upper",
+    "color": "mustard",
+    "season": "summer",
+    "style": [
+      "casual"
+    ],
+    "price": 0,
+    "image_url": "assets/garments/women/tops/52143.jpg"
   }
 ]

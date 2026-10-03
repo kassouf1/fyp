@@ -69,7 +69,6 @@ def recommend_outfit(request: PromptRequest):
         "preferences": preferences,
         "top": outfit["top"],
         "bottom": outfit["bottom"],
-        "shoes": outfit["shoes"],
         "combinations": outfit["combinations"],
     }
 

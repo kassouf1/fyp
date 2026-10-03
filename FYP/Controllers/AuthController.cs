@@ -131,6 +131,71 @@ public class AuthController : ControllerBase
         return Ok(new { message = "A new verification code has been sent." });
     }
 
+    // ── Forgot Password ───────────────────────────────────────────────────────
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+    {
+        var email = request.Email.Trim().ToLower();
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+        // Always respond the same way regardless of whether the account
+        // exists, so this endpoint can't be used to enumerate registered
+        // emails — only actually issue/send a code if it does.
+        if (user != null)
+        {
+            var old = await _context.PasswordResetCodes
+                .Where(c => c.UserId == user.Id && !c.IsUsed)
+                .ToListAsync();
+            old.ForEach(c => c.IsUsed = true);
+
+            var code = new Random().Next(100_000, 999_999).ToString();
+
+            _context.PasswordResetCodes.Add(new PasswordResetCode
+            {
+                UserId    = user.Id,
+                Code      = code,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+                IsUsed    = false,
+            });
+
+            await _context.SaveChangesAsync();
+            await _emailService.SendPasswordResetCodeAsync(user.Email, user.FullName, code);
+        }
+
+        return Ok(new { message = "If an account exists for that email, a reset code has been sent." });
+    }
+
+    // ── Reset Password ────────────────────────────────────────────────────────
+    [HttpPost("reset-password")]
+    public async Task<ActionResult<AuthResponse>> ResetPassword(ResetPasswordRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.NewPassword) || request.NewPassword.Length < 6)
+            return BadRequest("New password must be at least 6 characters.");
+
+        var email = request.Email.Trim().ToLower();
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null)
+            return BadRequest("Invalid or expired reset code.");
+
+        var record = await _context.PasswordResetCodes
+            .Where(c =>
+                c.UserId  == user.Id        &&
+                c.Code    == request.Code   &&
+                !c.IsUsed                   &&
+                c.ExpiresAt > DateTime.UtcNow)
+            .OrderByDescending(c => c.ExpiresAt)
+            .FirstOrDefaultAsync();
+
+        if (record == null)
+            return BadRequest("Invalid or expired reset code.");
+
+        record.IsUsed = true;
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        await _context.SaveChangesAsync();
+
+        return Ok(BuildAuthResponse(user));
+    }
+
     // ── Social Auth (Google / Apple) ──────────────────────────────────────────
     [HttpPost("social")]
     public async Task<ActionResult<AuthResponse>> SocialAuth(SocialAuthRequest request)

@@ -52,24 +52,20 @@ const Chip: React.FC<{ label: string; selected: boolean; onPress: () => void }> 
 const PIECE_CONFIG = [
   { key: 'top',    symbol: 'T', label: 'Top',    variant: 'primary' as const },
   { key: 'bottom', symbol: 'B', label: 'Bottom', variant: 'accent'  as const },
-  { key: 'shoes',  symbol: 'S', label: 'Shoes',  variant: 'success' as const },
 ];
 
 const OutfitCard: React.FC<{ outfit: OutfitItem; index: number; onTryOn: (o: OutfitItem) => void }> = ({ outfit, index, onTryOn }) => {
   const { themeColors: c } = useTheme();
-  // Show the whole outfit (top + bottom + shoes), not just the top garment,
-  // whenever the recommendation actually has all three pieces — falls back
-  // to the single top image for top-only combinations.
-  const hasFullOutfit = !!(outfit.imageUrl && outfit.bottomImageUrl && outfit.shoesImageUrl);
+  // Show the whole outfit (top + bottom) side by side, not just the top
+  // garment, whenever the recommendation has both pieces — falls back to
+  // the single top image for top-only combinations.
+  const hasFullOutfit = !!(outfit.imageUrl && outfit.bottomImageUrl);
   return (
     <Card delay={index * 110} elevated style={styles.outfitCard}>
       {hasFullOutfit ? (
         <View style={styles.outfitCollage}>
           <Image source={{ uri: outfit.imageUrl }} style={[styles.collageMain, { backgroundColor: c.surfaceElevated }]} resizeMode="cover" />
-          <View style={styles.collageSide}>
-            <Image source={{ uri: outfit.bottomImageUrl }} style={[styles.collageSideImage, { backgroundColor: c.surfaceElevated }]} resizeMode="cover" />
-            <Image source={{ uri: outfit.shoesImageUrl }} style={[styles.collageSideImage, { backgroundColor: c.surfaceElevated }]} resizeMode="cover" />
-          </View>
+          <Image source={{ uri: outfit.bottomImageUrl }} style={[styles.collageSideImage, { backgroundColor: c.surfaceElevated }]} resizeMode="cover" />
         </View>
       ) : outfit.imageUrl && (
         <Image source={{ uri: outfit.imageUrl }} style={[styles.outfitImage, { backgroundColor: c.surfaceElevated }]} resizeMode="cover" />
@@ -129,20 +125,18 @@ export const RecommendScreen: React.FC<Props> = ({ navigation, route }) => {
       const data = await recommendOutfit({ prompt: prompt.trim() });
       // The recommender returns one object with a `combinations` array, each
       // holding raw catalog products (e.g. `{ top: { title, color, ... } }`),
-      // not the flat {title, top, bottom, shoes} shape OutfitCard expects.
+      // not the flat {title, top, bottom} shape OutfitCard expects.
       const combos: any[] = Array.isArray(data) ? data : (data as any)?.combinations ?? [];
       const list: OutfitItem[] = combos.map((combo: any) => ({
         title: combo.top?.title ?? combo.top?.brand ?? 'Outfit',
         top: combo.top?.title ?? '',
         bottom: combo.bottom?.title ?? '',
-        shoes: combo.shoes?.title ?? '',
         color: combo.top?.color,
         category: combo.top?.category,
         topId: combo.top?.id,
         bottomId: combo.bottom?.id,
         imageUrl: combo.top?.image_path ? `${OUTFIT_RECOMMENDER_BASE_URL}${combo.top.image_path}` : undefined,
         bottomImageUrl: combo.bottom?.image_path ? `${OUTFIT_RECOMMENDER_BASE_URL}${combo.bottom.image_path}` : undefined,
-        shoesImageUrl: combo.shoes?.image_path ? `${OUTFIT_RECOMMENDER_BASE_URL}${combo.shoes.image_path}` : undefined,
       }));
       setResults(list);
     } catch (e: any) { Alert.alert('Error', e.message || 'Failed to get recommendations.'); }
@@ -309,7 +303,6 @@ const styles = StyleSheet.create({
   outfitImage: { width: '100%', height: 220, borderRadius: radius.lg, marginBottom: spacing.md },
   outfitCollage: { flexDirection: 'row', height: 220, gap: spacing.xs, marginBottom: spacing.md },
   collageMain: { flex: 1.3, borderRadius: radius.lg },
-  collageSide: { flex: 1, gap: spacing.xs },
   collageSideImage: { flex: 1, borderRadius: radius.lg },
   outfitHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md, marginBottom: spacing.md },
   outfitIndexBox: {

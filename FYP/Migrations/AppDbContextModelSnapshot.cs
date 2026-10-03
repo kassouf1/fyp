@@ -17,66 +17,115 @@ namespace FYP.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.13");
 
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitLike", b =>
-                {
-                    b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
-                    b.Property<int>("UserId").HasColumnType("INTEGER");
-                    b.Property<int>("TryOnHistoryId").HasColumnType("INTEGER");
-                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
-                    b.HasKey("Id");
-                    b.HasIndex("UserId", "TryOnHistoryId").IsUnique();
-                    b.ToTable("OutfitLikes");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitComment", b =>
-                {
-                    b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
-                    b.Property<int>("UserId").HasColumnType("INTEGER");
-                    b.Property<int>("TryOnHistoryId").HasColumnType("INTEGER");
-                    b.Property<string>("Text").IsRequired().HasColumnType("TEXT");
-                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
-                    b.HasKey("Id");
-                    b.HasIndex("TryOnHistoryId");
-                    b.HasIndex("UserId");
-                    b.ToTable("OutfitComments");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitFavorite", b =>
-                {
-                    b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
-                    b.Property<int>("UserId").HasColumnType("INTEGER");
-                    b.Property<int>("TryOnHistoryId").HasColumnType("INTEGER");
-                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
-                    b.HasKey("Id");
-                    b.HasIndex("UserId", "TryOnHistoryId").IsUnique();
-                    b.ToTable("OutfitFavorites");
-                });
-
             modelBuilder.Entity("SmartFashion.Api.Models.Block", b =>
                 {
-                    b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
-                    b.Property<int>("BlockerId").HasColumnType("INTEGER");
-                    b.Property<int>("BlockedId").HasColumnType("INTEGER");
-                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlockedId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlockerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
                     b.HasIndex("BlockedId");
-                    b.HasIndex("BlockerId", "BlockedId").IsUnique();
+
+                    b.HasIndex("BlockerId", "BlockedId")
+                        .IsUnique();
+
                     b.ToTable("Blocks");
                 });
 
-            modelBuilder.Entity("SmartFashion.Api.Models.MessageRequest", b =>
+            modelBuilder.Entity("SmartFashion.Api.Models.BrandCatalogItem", b =>
                 {
-                    b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
-                    b.Property<int>("SenderId").HasColumnType("INTEGER");
-                    b.Property<int>("ReceiverId").HasColumnType("INTEGER");
-                    b.Property<string>("MessageText").IsRequired().HasColumnType("TEXT");
-                    b.Property<string>("MediaUrl").HasColumnType("TEXT");
-                    b.Property<string>("Status").IsRequired().HasColumnType("TEXT");
-                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BrandPartnerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
-                    b.HasIndex("ReceiverId");
-                    b.HasIndex("SenderId", "ReceiverId").IsUnique();
-                    b.ToTable("MessageRequests");
+
+                    b.HasIndex("BrandPartnerId");
+
+                    b.ToTable("BrandCatalogItems");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.BrandPartner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApiBaseUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApiKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastError")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastSyncedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BrandPartners");
                 });
 
             modelBuilder.Entity("SmartFashion.Api.Models.Comment", b =>
@@ -198,19 +247,19 @@ namespace FYP.Migrations
                     b.Property<string>("MediaUrl")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("PostImageUrl")
+                    b.Property<string>("PostAuthorAvatarUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostAuthorName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostAuthorAvatarUrl")
+                    b.Property<string>("PostCaption")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostCaption")
+                    b.Property<int?>("PostId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PostImageUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ReceiverId")
@@ -233,6 +282,42 @@ namespace FYP.Migrations
                     b.HasIndex("SenderId", "ReceiverId", "CreatedAt");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.MessageRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId", "ReceiverId")
+                        .IsUnique();
+
+                    b.ToTable("MessageRequests");
                 });
 
             modelBuilder.Entity("SmartFashion.Api.Models.Notification", b =>
@@ -272,6 +357,110 @@ namespace FYP.Migrations
                     b.HasIndex("UserId", "CreatedAt");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TryOnHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TryOnHistoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OutfitComments");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TryOnHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TryOnHistoryId");
+
+                    b.HasIndex("UserId", "TryOnHistoryId")
+                        .IsUnique();
+
+                    b.ToTable("OutfitFavorites");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TryOnHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TryOnHistoryId");
+
+                    b.HasIndex("UserId", "TryOnHistoryId")
+                        .IsUnique();
+
+                    b.ToTable("OutfitLikes");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.PasswordResetCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PasswordResetCodes");
                 });
 
             modelBuilder.Entity("SmartFashion.Api.Models.Post", b =>
@@ -329,6 +518,9 @@ namespace FYP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -339,20 +531,17 @@ namespace FYP.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Caption")
+                    b.Property<string>("PostAuthorAvatarUrl")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PostAuthorName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostAuthorAvatarUrl")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PostCaption")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -362,6 +551,31 @@ namespace FYP.Migrations
                     b.HasIndex("UserId", "ExpiresAt");
 
                     b.ToTable("Stories");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.StoryLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("StoryId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("StoryLikes");
                 });
 
             modelBuilder.Entity("SmartFashion.Api.Models.StoryView", b =>
@@ -501,6 +715,36 @@ namespace FYP.Migrations
                     b.ToTable("UserPushTokens");
                 });
 
+            modelBuilder.Entity("SmartFashion.Api.Models.Block", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.User", "Blocked")
+                        .WithMany()
+                        .HasForeignKey("BlockedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "Blocker")
+                        .WithMany()
+                        .HasForeignKey("BlockerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Blocked");
+
+                    b.Navigation("Blocker");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.BrandCatalogItem", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.BrandPartner", "BrandPartner")
+                        .WithMany("CatalogItems")
+                        .HasForeignKey("BrandPartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BrandPartner");
+                });
+
             modelBuilder.Entity("SmartFashion.Api.Models.Comment", b =>
                 {
                     b.HasOne("SmartFashion.Api.Models.Post", "Post")
@@ -588,6 +832,25 @@ namespace FYP.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("SmartFashion.Api.Models.MessageRequest", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("SmartFashion.Api.Models.Notification", b =>
                 {
                     b.HasOne("SmartFashion.Api.Models.User", "Actor")
@@ -609,6 +872,74 @@ namespace FYP.Migrations
                     b.Navigation("Actor");
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitComment", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory")
+                        .WithMany()
+                        .HasForeignKey("TryOnHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TryOnHistory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitFavorite", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory")
+                        .WithMany()
+                        .HasForeignKey("TryOnHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TryOnHistory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.OutfitLike", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory")
+                        .WithMany()
+                        .HasForeignKey("TryOnHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TryOnHistory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartFashion.Api.Models.PasswordResetCode", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -654,6 +985,25 @@ namespace FYP.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SmartFashion.Api.Models.StoryLike", b =>
+                {
+                    b.HasOne("SmartFashion.Api.Models.Story", "Story")
+                        .WithMany("Likes")
+                        .HasForeignKey("StoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartFashion.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Story");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SmartFashion.Api.Models.StoryView", b =>
                 {
                     b.HasOne("SmartFashion.Api.Models.Story", "Story")
@@ -695,39 +1045,9 @@ namespace FYP.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitLike", b =>
+            modelBuilder.Entity("SmartFashion.Api.Models.BrandPartner", b =>
                 {
-                    b.HasOne("SmartFashion.Api.Models.User", "User").WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory").WithMany().HasForeignKey("TryOnHistoryId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.Navigation("User"); b.Navigation("TryOnHistory");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitComment", b =>
-                {
-                    b.HasOne("SmartFashion.Api.Models.User", "User").WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory").WithMany().HasForeignKey("TryOnHistoryId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.Navigation("User"); b.Navigation("TryOnHistory");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.OutfitFavorite", b =>
-                {
-                    b.HasOne("SmartFashion.Api.Models.User", "User").WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.HasOne("SmartFashion.Api.Models.TryOnHistory", "TryOnHistory").WithMany().HasForeignKey("TryOnHistoryId").OnDelete(DeleteBehavior.Cascade).IsRequired();
-                    b.Navigation("User"); b.Navigation("TryOnHistory");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.Block", b =>
-                {
-                    b.HasOne("SmartFashion.Api.Models.User", "Blocker").WithMany().HasForeignKey("BlockerId").OnDelete(DeleteBehavior.Restrict).IsRequired();
-                    b.HasOne("SmartFashion.Api.Models.User", "Blocked").WithMany().HasForeignKey("BlockedId").OnDelete(DeleteBehavior.Restrict).IsRequired();
-                    b.Navigation("Blocker"); b.Navigation("Blocked");
-                });
-
-            modelBuilder.Entity("SmartFashion.Api.Models.MessageRequest", b =>
-                {
-                    b.HasOne("SmartFashion.Api.Models.User", "Sender").WithMany().HasForeignKey("SenderId").OnDelete(DeleteBehavior.Restrict).IsRequired();
-                    b.HasOne("SmartFashion.Api.Models.User", "Receiver").WithMany().HasForeignKey("ReceiverId").OnDelete(DeleteBehavior.Restrict).IsRequired();
-                    b.Navigation("Sender"); b.Navigation("Receiver");
+                    b.Navigation("CatalogItems");
                 });
 
             modelBuilder.Entity("SmartFashion.Api.Models.Post", b =>
@@ -739,6 +1059,8 @@ namespace FYP.Migrations
 
             modelBuilder.Entity("SmartFashion.Api.Models.Story", b =>
                 {
+                    b.Navigation("Likes");
+
                     b.Navigation("Views");
                 });
 #pragma warning restore 612, 618

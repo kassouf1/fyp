@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<OutfitComment> OutfitComments => Set<OutfitComment>();
     public DbSet<OutfitFavorite> OutfitFavorites => Set<OutfitFavorite>();
     public DbSet<EmailVerificationCode> EmailVerificationCodes => Set<EmailVerificationCode>();
+    public DbSet<PasswordResetCode> PasswordResetCodes => Set<PasswordResetCode>();
     public DbSet<Post> Posts => Set<Post>();
     public DbSet<Story> Stories => Set<Story>();
     public DbSet<StoryView> StoryViews => Set<StoryView>();
@@ -27,6 +28,8 @@ public class AppDbContext : DbContext
     public DbSet<PostTag> PostTags => Set<PostTag>();
     public DbSet<Block> Blocks => Set<Block>();
     public DbSet<MessageRequest> MessageRequests => Set<MessageRequest>();
+    public DbSet<BrandPartner> BrandPartners => Set<BrandPartner>();
+    public DbSet<BrandCatalogItem> BrandCatalogItems => Set<BrandCatalogItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,6 +52,9 @@ public class AppDbContext : DbContext
             .IsUnique();
 
         modelBuilder.Entity<EmailVerificationCode>()
+            .HasIndex(c => c.UserId);
+
+        modelBuilder.Entity<PasswordResetCode>()
             .HasIndex(c => c.UserId);
 
         // Posts
@@ -117,6 +123,17 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(b => b.BlockedId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // BrandCatalogItem — sync wipes and reinserts a partner's items, so
+        // just needs a lookup index, not a uniqueness constraint.
+        modelBuilder.Entity<BrandCatalogItem>()
+            .HasIndex(i => i.BrandPartnerId);
+
+        modelBuilder.Entity<BrandCatalogItem>()
+            .HasOne(i => i.BrandPartner)
+            .WithMany(p => p.CatalogItems)
+            .HasForeignKey(i => i.BrandPartnerId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // MessageRequest
         modelBuilder.Entity<MessageRequest>()

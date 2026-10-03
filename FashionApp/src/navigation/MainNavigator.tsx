@@ -28,6 +28,7 @@ import { ChatScreen }          from '../screens/ChatScreen';
 import { NotificationsScreen } from '../screens/NotificationsScreen';
 import { TryOnScreen }         from '../screens/TryOnScreen';
 import { BrandShopScreen }       from '../screens/BrandShopScreen';
+import { BrandPartnerScreen }    from '../screens/BrandPartnerScreen';
 import { ClothingDetailScreen }  from '../screens/ClothingDetailScreen';
 import { WishlistScreen }        from '../screens/WishlistScreen';
 import { HistoryScreen }         from '../screens/HistoryScreen';
@@ -72,6 +73,7 @@ export type RootStackParamList = {
     forSlot?: 'top' | 'bottom';
   } | undefined;
   BrandShop:      { forSlot?: 'top' | 'bottom' } | undefined;
+  BrandPartner:   undefined;
   ClothingDetail: { product: any; forSlot?: 'top' | 'bottom' };
   Wishlist:       undefined;
   History:        undefined;
@@ -284,6 +286,7 @@ export const MainNavigator: React.FC = () => (
     <Stack.Screen name="Notifications" component={NotificationsScreen} />
     <Stack.Screen name="TryOn"         component={TryOnScreen} />
     <Stack.Screen name="BrandShop"      component={BrandShopScreen} />
+    <Stack.Screen name="BrandPartner"   component={BrandPartnerScreen} />
     <Stack.Screen name="ClothingDetail" component={ClothingDetailScreen} />
     <Stack.Screen name="Wishlist"        component={WishlistScreen} />
     <Stack.Screen name="History"       component={HistoryScreen} />

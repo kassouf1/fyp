@@ -207,6 +207,19 @@ export const SettingsScreen: React.FC = () => {
           </Card>
         </View>
 
+        {/* ── Business ── */}
+        <View style={s.section}>
+          <Text style={[s.sectionTitle, { color: c.textMuted }]}>Business</Text>
+          <Card noAnimation style={[s.menuCard, { backgroundColor: c.surface, borderColor: c.border }]}>
+            <MenuRow {...rowProps}
+              icon="storefront-outline" iconVariant="accent"
+              label="Brand Partner API"
+              sublabel="List your brand's catalog on SmartFashion"
+              onPress={() => navigation.navigate('BrandPartner')}
+            />
+          </Card>
+        </View>
+
         {/* ── App ── */}
         <View style={s.section}>
           <Text style={[s.sectionTitle, { color: c.textMuted }]}>App</Text>

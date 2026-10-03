@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView,
   KeyboardAvoidingView, Platform, TouchableOpacity,
@@ -6,10 +6,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, FadeInUp, ZoomIn, FadeIn } from 'react-native-reanimated';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Google from 'expo-auth-session/providers/google';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri } from 'expo-auth-session';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -17,12 +14,6 @@ import { useTheme } from '../../context/ThemeContext';
 import { register, socialAuth } from '../../api/auth';
 import { typography, spacing, radius } from '../../theme';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
-
-WebBrowser.maybeCompleteAuthSession();
-
-const GOOGLE_WEB_CLIENT_ID     = 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com';
-const GOOGLE_IOS_CLIENT_ID     = 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com';
-const GOOGLE_ANDROID_CLIENT_ID = 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com';
 
 type Props = { navigation: NativeStackNavigationProp<AuthStackParamList, 'Register'> };
 
@@ -37,45 +28,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [showPw, setShowPw]         = useState(false);
   const [error, setError]           = useState('');
   const [loading, setLoading]       = useState(false);
-  const [socialLoading, setSocial]  = useState<'google' | 'apple' | null>(null);
-
-  const redirectUri = makeRedirectUri({ scheme: 'smart-fashion' });
-
-  const [googleRequest, googleResponse, googlePrompt] = Google.useAuthRequest({
-    clientId: GOOGLE_WEB_CLIENT_ID,
-    iosClientId: GOOGLE_IOS_CLIENT_ID,
-    androidClientId: GOOGLE_ANDROID_CLIENT_ID,
-    redirectUri,
-  });
-
-  useEffect(() => {
-    if (googleResponse?.type === 'success') {
-      const token = googleResponse.authentication?.accessToken;
-      if (token) fetchGoogleUser(token);
-    } else if (googleResponse?.type === 'error') {
-      setError('Google sign-in failed. Please try again.');
-      setSocial(null);
-    } else if (googleResponse?.type === 'dismiss') {
-      setSocial(null);
-    }
-  }, [googleResponse]);
-
-  const fetchGoogleUser = async (accessToken: string) => {
-    try {
-      const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const info = await res.json();
-      const user = await socialAuth('google', info.email, info.name ?? '', info.id ?? '');
-      if (user.isNewAccount) {
-        navigation.navigate('CompleteProfile', { pendingUser: user });
-      } else {
-        await signIn(user);
-      }
-    } catch (e: any) {
-      setError(e.message || 'Google sign-in failed.');
-    } finally { setSocial(null); }
-  };
+  const [socialLoading, setSocial]  = useState<'apple' | null>(null);
 
   const handleRegister = async () => {
     if (!fullName.trim() || !username.trim() || !email.trim() || !password || !confirm) {
@@ -98,11 +51,6 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     } catch (e: any) {
       setError(e.message || 'Registration failed. Please try again.');
     } finally { setLoading(false); }
-  };
-
-  const handleGoogle = async () => {
-    setSocial('google'); setError('');
-    await googlePrompt();
   };
 
   const handleApple = async () => {
@@ -200,49 +148,35 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               />
             </Animated.View>
 
-            {/* ── Social Divider ── */}
-            <Animated.View entering={FadeIn.delay(800).duration(400)} style={styles.dividerRow}>
-              <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
-              <Text style={[styles.dividerText, { color: c.textMuted }]}>or continue with</Text>
-              <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
-            </Animated.View>
+            {/* ── Social sign-up — Apple only; Google removed until real
+                 OAuth credentials are configured ── */}
+            {Platform.OS === 'ios' && (
+              <>
+                <Animated.View entering={FadeIn.delay(800).duration(400)} style={styles.dividerRow}>
+                  <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
+                  <Text style={[styles.dividerText, { color: c.textMuted }]}>or continue with</Text>
+                  <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
+                </Animated.View>
 
-            {/* ── Social Buttons ── */}
-            <Animated.View entering={FadeInUp.delay(850).duration(400)} style={styles.socialRow}>
-              <TouchableOpacity
-                style={[styles.socialBtn, styles.googleBtn, { backgroundColor: c.white, borderColor: c.border }]}
-                onPress={handleGoogle}
-                disabled={socialLoading !== null || !googleRequest}
-                activeOpacity={0.8}
-              >
-                {socialLoading === 'google' ? (
-                  <Text style={[styles.googleBtnText, { color: c.black }]}>Connecting…</Text>
-                ) : (
-                  <>
-                    <Text style={styles.googleLogo}>G</Text>
-                    <Text style={[styles.googleBtnText, { color: c.black }]}>Google</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-
-              {Platform.OS === 'ios' && (
-                <TouchableOpacity
-                  style={[styles.socialBtn, styles.appleBtn, { backgroundColor: c.black, borderColor: c.borderLight }]}
-                  onPress={handleApple}
-                  disabled={socialLoading !== null}
-                  activeOpacity={0.8}
-                >
-                  {socialLoading === 'apple' ? (
-                    <Text style={[styles.appleBtnText, { color: c.white }]}>Connecting…</Text>
-                  ) : (
-                    <>
-                      <Text style={[styles.appleLogo, { color: c.white }]}></Text>
-                      <Text style={[styles.appleBtnText, { color: c.white }]}>Apple</Text>
-                    </>
-                  )}
-                </TouchableOpacity>
-              )}
-            </Animated.View>
+                <Animated.View entering={FadeInUp.delay(850).duration(400)} style={styles.socialRow}>
+                  <TouchableOpacity
+                    style={[styles.socialBtn, styles.appleBtn, { backgroundColor: c.black, borderColor: c.borderLight }]}
+                    onPress={handleApple}
+                    disabled={socialLoading !== null}
+                    activeOpacity={0.8}
+                  >
+                    {socialLoading === 'apple' ? (
+                      <Text style={[styles.appleBtnText, { color: c.white }]}>Connecting…</Text>
+                    ) : (
+                      <>
+                        <Text style={[styles.appleLogo, { color: c.white }]}></Text>
+                        <Text style={[styles.appleBtnText, { color: c.white }]}>Apple</Text>
+                      </>
+                    )}
+                  </TouchableOpacity>
+                </Animated.View>
+              </>
+            )}
 
             <Animated.View entering={FadeIn.delay(900).duration(400)}>
               <Button
@@ -305,10 +239,6 @@ const styles = StyleSheet.create({
     flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
     paddingVertical: 13, borderRadius: radius.lg, gap: 8, borderWidth: 1,
   },
-  googleBtn: {},
-  googleLogo: { fontSize: 16, fontWeight: '700', color: '#4285F4' },
-  googleBtnText: { fontSize: typography.fontSizeMD, fontWeight: typography.fontWeightSemiBold },
-
   appleBtn: {},
   appleLogo: { fontSize: 17, lineHeight: 20 },
   appleBtnText: { fontSize: typography.fontSizeMD, fontWeight: typography.fontWeightSemiBold },

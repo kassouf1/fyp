@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView,
   KeyboardAvoidingView, Platform, TouchableOpacity,
@@ -7,10 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown, FadeInUp, ZoomIn, FadeIn } from 'react-native-reanimated';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Google from 'expo-auth-session/providers/google';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri } from 'expo-auth-session';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -19,13 +16,6 @@ import { login, socialAuth } from '../../api/auth';
 import { ApiError } from '../../api/client';
 import { typography, spacing, radius } from '../../theme';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
-
-WebBrowser.maybeCompleteAuthSession();
-
-// ── Paste your Google OAuth Web Client ID here (from console.cloud.google.com) ──
-const GOOGLE_WEB_CLIENT_ID     = 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com';
-const GOOGLE_IOS_CLIENT_ID     = 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com';
-const GOOGLE_ANDROID_CLIENT_ID = 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com';
 
 type Props = { navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'> };
 
@@ -37,51 +27,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [showPassword, setShowPw]   = useState(false);
   const [error, setError]           = useState('');
   const [loading, setLoading]       = useState(false);
-  const [socialLoading, setSocial]  = useState<'google' | 'apple' | null>(null);
-
-  const redirectUri = makeRedirectUri({ scheme: 'smart-fashion' });
-
-  const [googleRequest, googleResponse, googlePrompt] = Google.useAuthRequest({
-    clientId: GOOGLE_WEB_CLIENT_ID,
-    iosClientId: GOOGLE_IOS_CLIENT_ID,
-    androidClientId: GOOGLE_ANDROID_CLIENT_ID,
-    redirectUri,
-  });
-
-  // Log redirect URI in dev so you know what to add in Google Console
-  useEffect(() => {
-    if (__DEV__) console.log('[Google OAuth] Redirect URI:', redirectUri);
-  }, []);
-
-  // ── Respond to Google OAuth result ─────────────────────────────────────────
-  useEffect(() => {
-    if (googleResponse?.type === 'success') {
-      const token = googleResponse.authentication?.accessToken;
-      if (token) fetchGoogleUser(token);
-    } else if (googleResponse?.type === 'error') {
-      setError('Google sign-in failed. Please try again.');
-      setSocial(null);
-    } else if (googleResponse?.type === 'dismiss') {
-      setSocial(null);
-    }
-  }, [googleResponse]);
-
-  const fetchGoogleUser = async (accessToken: string) => {
-    try {
-      const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const info = await res.json();
-      const user = await socialAuth('google', info.email, info.name ?? '', info.id ?? '');
-      if (user.isNewAccount) {
-        navigation.navigate('CompleteProfile', { pendingUser: user });
-      } else {
-        await signIn(user);
-      }
-    } catch (e: any) {
-      setError(e.message || 'Google sign-in failed.');
-    } finally { setSocial(null); }
-  };
+  const [socialLoading, setSocial]  = useState<'apple' | null>(null);
 
   // ── Email / Password login ──────────────────────────────────────────────────
   const handleLogin = async () => {
@@ -97,12 +43,6 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         setError(e.message || 'Login failed. Please try again.');
       }
     } finally { setLoading(false); }
-  };
-
-  // ── Google Sign In ─────────────────────────────────────────────────────────
-  const handleGoogle = async () => {
-    setSocial('google'); setError('');
-    await googlePrompt();
   };
 
   // ── Apple Sign In ──────────────────────────────────────────────────────────
@@ -189,7 +129,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(380).duration(400)}>
-          <TouchableOpacity style={styles.forgotRow}>
+          <TouchableOpacity style={styles.forgotRow} onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={[styles.forgot, { color: c.primary }]}>Forgot password?</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -203,51 +143,35 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           />
         </Animated.View>
 
-        {/* ── Social Divider ── */}
-        <Animated.View entering={FadeIn.delay(480).duration(400)} style={styles.dividerRow}>
-          <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
-          <Text style={[styles.dividerText, { color: c.textMuted }]}>or continue with</Text>
-          <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
-        </Animated.View>
+        {/* ── Social sign-in — Apple only; Google removed until real OAuth
+             credentials are configured (see LoginScreen git history) ── */}
+        {Platform.OS === 'ios' && (
+          <>
+            <Animated.View entering={FadeIn.delay(480).duration(400)} style={styles.dividerRow}>
+              <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
+              <Text style={[styles.dividerText, { color: c.textMuted }]}>or continue with</Text>
+              <View style={[styles.dividerLine, { backgroundColor: c.border }]} />
+            </Animated.View>
 
-        {/* ── Social Buttons ── */}
-        <Animated.View entering={FadeInUp.delay(520).duration(400)} style={styles.socialRow}>
-          {/* Google */}
-          <TouchableOpacity
-            style={[styles.socialBtn, { backgroundColor: c.white, borderColor: c.border }]}
-            onPress={handleGoogle}
-            disabled={socialLoading !== null || !googleRequest}
-            activeOpacity={0.8}
-          >
-            {socialLoading === 'google' ? (
-              <Text style={[styles.socialBtnText, { color: c.black }]}>Connecting…</Text>
-            ) : (
-              <>
-                <Ionicons name="logo-google" size={18} color="#4285F4" />
-                <Text style={[styles.socialBtnText, { color: c.black }]}>Google</Text>
-              </>
-            )}
-          </TouchableOpacity>
-
-          {/* Apple – iOS only */}
-          {Platform.OS === 'ios' && (
-            <TouchableOpacity
-              style={[styles.socialBtn, { backgroundColor: c.black, borderColor: c.borderLight }]}
-              onPress={handleApple}
-              disabled={socialLoading !== null}
-              activeOpacity={0.8}
-            >
-              {socialLoading === 'apple' ? (
-                <Text style={[styles.socialBtnText, { color: c.white }]}>Connecting…</Text>
-              ) : (
-                <>
-                  <Ionicons name="logo-apple" size={19} color={c.white} />
-                  <Text style={[styles.socialBtnText, { color: c.white }]}>Apple</Text>
-                </>
-              )}
-            </TouchableOpacity>
-          )}
-        </Animated.View>
+            <Animated.View entering={FadeInUp.delay(520).duration(400)} style={styles.socialRow}>
+              <TouchableOpacity
+                style={[styles.socialBtn, { backgroundColor: c.black, borderColor: c.borderLight }]}
+                onPress={handleApple}
+                disabled={socialLoading !== null}
+                activeOpacity={0.8}
+              >
+                {socialLoading === 'apple' ? (
+                  <Text style={[styles.socialBtnText, { color: c.white }]}>Connecting…</Text>
+                ) : (
+                  <>
+                    <Ionicons name="logo-apple" size={19} color={c.white} />
+                    <Text style={[styles.socialBtnText, { color: c.white }]}>Apple</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            </Animated.View>
+          </>
+        )}
 
         {/* ── Footer ── */}
         <Animated.View entering={FadeIn.delay(580).duration(400)} style={styles.footerRow}>
